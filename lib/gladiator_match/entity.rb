@@ -1,6 +1,6 @@
-module Timeline
+module GladiatorMatch
   class Entity
-    include ActiveModel::Validations
+    # include ActiveModel::Validations
 
     def initialize(attrs={})
       attrs.each do |attr, value|
