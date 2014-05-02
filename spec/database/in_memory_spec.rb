@@ -66,6 +66,23 @@ describe GladiatorMatch::Database::InMemory do
     end
   end
 
+  describe 'Sessions' do
+    let(:mario) {
+      db.create_user(
+        :first_name => 'Mario',
+        :last_name => 'Mario',
+        :email => 'mario@example.com',
+        :github_login => 'mario_mario'
+      )
+    }
+
+    it "creates and gets a session" do
+      session_id = db.create_session(user_id: mario.id)
+      retrieved_session = db.get_session(session_id)
+      expect(retrieved_session[:user_id]).to eq(mario.id)
+    end
+  end
+
   describe 'Queries' do
     let(:mario) {
       db.create_user(
@@ -107,8 +124,10 @@ describe GladiatorMatch::Database::InMemory do
       expect(group_topics).to include('haskell', 'html')
     end
 
-    xit "gets all users for a group" do
-      group_1_users = db.get_group(group_1.id, users: true).users
+    it "gets all users for a group" do
+      group_1_users = db.get_group(@group_1.id, users: true).users
+      expect(group_1_users).to include(mario, luigi)
+      expect(group_1_users).to_not include(peach)
     end
   end
 end

@@ -18,4 +18,9 @@ RSpec.configure do |config|
   # the seed, which is printed after each run.
   #     --seed 1234
   config.order = 'random'
+
+  # Configure each test to always use a new singleton instance
+  config.before(:each) do
+    GladiatorMatch.instance_variable_set(:@__db_instance, nil)
+  end
 end

@@ -12,6 +12,7 @@ module GladiatorMatch
         @users = {}
         @memberships = []
         @groups = {}
+        @sessions = {}
       end
 
       # # # # #
@@ -46,7 +47,7 @@ module GladiatorMatch
         attrs[:id] = id
 
         group = Group.new(attrs).tap {|group| @groups[id] = group }
-       
+
         attrs[:users].each do |user|
           @memberships << { group_id: group.id, user_id: user.id}
         end
@@ -60,6 +61,22 @@ module GladiatorMatch
           group.users = get_users_by_group(group.id)
         end
         group
+      end
+
+      # # # # # #
+      # Session #
+      # # # # # #
+
+      def create_session(attrs)
+        # generate unique crazy id for session
+        sid = SecureRandom.uuid
+        @sessions[sid] = { id: sid, user_id: attrs[:user_id] }
+        sid
+      end
+
+      def get_session(sid)
+        # binding.pry
+        @sessions[sid]
       end
 
       # # # # # #

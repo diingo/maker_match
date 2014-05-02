@@ -1,10 +1,12 @@
 require 'pry-debugger'
 require 'yaml'
 require 'solid_use_case'
+# this library allows us to generate a unique random is for sessions
+require 'securerandom'
 
 module GladiatorMatch
   def self.db
-    @__db_instance ||= GladiatorMatch::Database::InMemory.new
+    @__db_instance ||= Database::InMemory.new
   end
 end
 

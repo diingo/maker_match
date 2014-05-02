@@ -5,12 +5,13 @@ describe GladiatorMatch::CreateGroup do
     @db = GladiatorMatch.db
   end
 
+  context "failure" do
+
+  end
+  
   context "success" do
     xit "creates a group between two users - a pair" do
     end
   end
 
-  context "failure" do
-
-  end
 end
