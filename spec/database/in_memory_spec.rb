@@ -2,7 +2,34 @@ require 'spec_helper'
 
 describe GladiatorMatch::Database::InMemory do
   let(:db) { described_class.new }
-  # let(:db) { GladiatorMatch.db }
+
+  let(:mario) {
+    db.create_user(
+      :first_name => 'Mario',
+      :last_name => 'Mario',
+      :email => 'mario@example.com',
+      :github_login => 'mario_mario'
+    )
+  }
+
+  let(:luigi) {
+    db.create_user(
+      :first_name => 'Luigi',
+      :last_name => 'Mario',
+      :email => 'luigi@example.com',
+      :github_login => 'luigi_mario'
+    )
+  }
+
+  let(:peach) {
+    db.create_user(
+      :first_name => 'Peach',
+      :last_name => 'Peach',
+      :email => 'peach@example.com',
+      :github_login => 'peach'
+    )
+  }
+
   before { db.clear_everything }
 
   describe 'Users' do
@@ -31,24 +58,8 @@ describe GladiatorMatch::Database::InMemory do
     end
   end
 
-  describe 'Groups' do
-    let(:mario) {
-      db.create_user(
-        :first_name => 'Mario',
-        :last_name => 'Mario',
-        :email => 'mario@example.com',
-        :github_login => 'mario_mario'
-      )
-    }
 
-    let(:luigi) {
-      db.create_user(
-        :first_name => 'Luigi',
-        :last_name => 'Mario',
-        :email => 'luigi@example.com',
-        :github_login => 'luigi_mario'
-      )
-    }
+  describe 'Groups' do
 
     it "creates a group" do
       group = db.create_group(users: [mario, luigi], topic: 'haskell')
@@ -67,14 +78,6 @@ describe GladiatorMatch::Database::InMemory do
   end
 
   describe 'Sessions' do
-    let(:mario) {
-      db.create_user(
-        :first_name => 'Mario',
-        :last_name => 'Mario',
-        :email => 'mario@example.com',
-        :github_login => 'mario_mario'
-      )
-    }
 
     it "creates and gets a session" do
       session_id = db.create_session(user_id: mario.id)
@@ -83,33 +86,17 @@ describe GladiatorMatch::Database::InMemory do
     end
   end
 
+  describe 'Invites' do
+    it "creates and gets invites" do
+      invite = db.create_invite(inviter_id: mario.id, invitee_id: peach.id)
+      retrieved_invite = db.get_invite(invite.id)
+      
+      expect(retrieved_invite.invitee_id).to eq(peach.id)
+      expect(retrieved_invite.inviter_id).to eq(mario.id)
+    end
+  end
+
   describe 'Queries' do
-    let(:mario) {
-      db.create_user(
-        :first_name => 'Mario',
-        :last_name => 'Mario',
-        :email => 'mario@example.com',
-        :github_login => 'mario_mario'
-      )
-    }
-
-    let(:luigi) {
-      db.create_user(
-        :first_name => 'Luigi',
-        :last_name => 'Mario',
-        :email => 'luigi@example.com',
-        :github_login => 'luigi_mario'
-      )
-    }
-
-    let(:peach) {
-      db.create_user(
-        :first_name => 'Peach',
-        :last_name => 'Peach',
-        :email => 'peach@example.com',
-        :github_login => 'peach'
-      )
-    }
 
     before do
       @group_1 = db.create_group(users: [mario, luigi], topic: 'haskell')

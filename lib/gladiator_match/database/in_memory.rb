@@ -9,10 +9,12 @@ module GladiatorMatch
       def clear_everything
         @user_id_counter = 100
         @group_id_counter = 200
+        @invite_id_counter = 300
         @users = {}
         @memberships = []
         @groups = {}
         @sessions = {}
+        @invites = {}
       end
 
       # # # # #
@@ -77,6 +79,24 @@ module GladiatorMatch
       def get_session(sid)
         # binding.pry
         @sessions[sid]
+      end
+
+      # # # # # #
+      # Invite  #
+      # # # # # #
+
+      def create_invite(attrs)
+        id = (@invite_id_counter += 1)
+        attrs[:id] = id
+        invite = Invite.new(attrs)
+
+        @invites[id] = invite
+
+        invite
+      end
+
+      def get_invite(iid)
+        @invites[iid]
       end
 
       # # # # # #
