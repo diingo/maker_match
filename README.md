@@ -1,6 +1,6 @@
-# GladiatorMatch
+# CoderMatch
 
-A not so simple app to match gladiators together for learning, pair-programming, making friends and fun.
+A not so simple app to match coders together for learning, pair-programming, making friends and fun.
 
 ## User Stories (MVP)
 - As a user, I want to be able to login through github

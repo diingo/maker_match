@@ -3,6 +3,9 @@ require 'yaml'
 require 'solid_use_case'
 
 module GladiatorMatch
+  def self.db
+    @__db_instance ||= GladiatorMatch::Database::InMemory.new
+  end
 end
 
 require_relative 'gladiator_match/entity.rb'
