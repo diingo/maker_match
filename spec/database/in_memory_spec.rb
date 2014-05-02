@@ -56,6 +56,18 @@ describe GladiatorMatch::Database::InMemory do
       expect(db.all_users.count).to eq 2
       expect(db.all_users.map &:first_name).to include('Peach', 'Harley')
     end
+
+    it "gets a user by github_login" do
+      retrieved_user = db.get_user_by_login(peach.github_login)
+
+      expect(retrieved_user.first_name).to eq('Peach')
+    end
+
+    it "gets a user by session key/id" do
+      sid = db.create_session(user_id: peach.id)
+      retrieved_user = db.get_user_by_session(sid)
+      expect(retrieved_user.first_name).to eq('Peach')
+    end
   end
 
 
@@ -90,7 +102,7 @@ describe GladiatorMatch::Database::InMemory do
     it "creates and gets invites" do
       invite = db.create_invite(inviter_id: mario.id, invitee_id: peach.id)
       retrieved_invite = db.get_invite(invite.id)
-      
+
       expect(retrieved_invite.invitee_id).to eq(peach.id)
       expect(retrieved_invite.inviter_id).to eq(mario.id)
     end
@@ -113,8 +125,9 @@ describe GladiatorMatch::Database::InMemory do
 
     it "gets all users for a group" do
       group_1_users = db.get_group(@group_1.id, users: true).users
-      expect(group_1_users).to include(mario, luigi)
-      expect(group_1_users).to_not include(peach)
+      group_1_users_names = group_1_users.map(&:first_name)
+      expect(group_1_users_names).to include('Mario', 'Luigi')
+      expect(group_1_users_names).to_not include('Peach')
     end
   end
 end
