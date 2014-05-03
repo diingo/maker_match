@@ -5,7 +5,7 @@ module GladiatorMatch
       users = inputs[:users]
 
       return failure(:invalid_users) unless validate_users?(users)
-      
+
     end
 
     def validate_users?(users)

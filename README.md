@@ -13,6 +13,10 @@ A not so simple app to match coders together for learning, pair-programming, mak
   - Shows proximity of where I'd like to meet up on a map - a radius
 - As a user, I want to be able to find other users to group/pair with
 
+## Current TO DO
+
+- work on RespondToInvite use case - have invite types - create a pair group or invite to join existing group
+
 ## User Stories (later)
 
 - As a user, I want to be able to pair or create a learning group based on:

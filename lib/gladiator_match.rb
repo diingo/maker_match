@@ -1,7 +1,7 @@
 require 'pry-debugger'
 require 'yaml'
 require 'solid_use_case'
-# this library allows us to generate a unique random is for sessions
+# this library allows us to generate a unique random id for sessions
 require 'securerandom'
 
 module GladiatorMatch
