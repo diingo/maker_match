@@ -5,6 +5,7 @@ module GladiatorMatch
       users = inputs[:users]
 
       return failure(:invalid_users) unless validate_users?(users)
+      return failure(:missing_topic) if inputs[:topic].nil?
 
     end
 

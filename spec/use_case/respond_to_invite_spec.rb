@@ -19,12 +19,21 @@ describe GladiatorMatch::RespondToInvite do
     )
   }
 
-  let(:invite) { GladiatorMatch.db.create_invite(inviter_id: luigi.id, invitee_id: peach.id)}
+  let(:mario) {
+    GladiatorMatch.db.create_user(
+      :first_name => 'Mario',
+      :last_name => 'Mario',
+      :email => 'mario@example.com',
+      :github_login => 'mario_mario'
+    )
+  }
+
+  let(:invite) { GladiatorMatch.db.create_invite(inviter_id: luigi.id, invitee_id: peach.id, group_id: nil)}
 
   let(:result) { described_class.run(@params) }
 
   before do
-    @params = { invite_id: invite.id, response: "accept" }
+    @params = { invite_id: invite.id, response: 'accept' }
   end
 
   context 'failure' do
@@ -67,5 +76,24 @@ describe GladiatorMatch::RespondToInvite do
     @params[:invite_id] = invite.id.to_s
 
     expect(result.success?).to eq(true)
+  end
+
+  it "creates a group between inviter and invitee if invite has nil group_id" do
+    expect(invite.group_id).to be_nil
+
+    expect(result.success?).to eq(true)
+
+    expect(result.group.users.map(&:first_name)).to include('Luigi', 'Peach')
+    expect(result.group.users.map(&:first_name)).to_not include('Mario')
+  end
+
+  it "adds invitee to group if invite's group id is not nil" do
+    group = GladiatorMatch.db.create_group(users: [luigi, peach], topic: "haskell")
+    # create an invite to a group that already has peach and luigi
+    invite = GladiatorMatch.db.create_invite(inviter_id: luigi.id, invitee_id: mario.id, group_id: group.id )
+    @params[:invite_id] = invite.id
+
+    expect(result.success?).to eq(true)
+    expect(result.group.users.map(&:first_name)).to include('Luigi', 'Peach', 'Mario')
   end
 end

@@ -73,12 +73,12 @@ describe GladiatorMatch::Database::InMemory do
 
   describe 'Groups' do
 
-    it "creates a group" do
-      group = db.create_group(users: [mario, luigi], topic: 'haskell')
+    it "creates a group with default topic" do
+      group = db.create_group(users: [mario, luigi])
       expect(group).to be_a GladiatorMatch::Group
       expect(group.users.map &:first_name).to include 'Mario', 'Luigi'
       expect(group.id).to_not be_nil
-      expect(group.topic).to eq('haskell')
+      expect(group.topic).to eq('Introduce Yourselves')
     end
 
     it "gets a group" do
