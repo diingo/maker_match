@@ -3,15 +3,20 @@
 A not so simple app to match coders together for learning, pair-programming, making friends and fun.
 
 ## User Stories (MVP)
-- As a user, I want to be able to login through github
-- As a user, I want to be able to pair or create a learning group based on:
+1. As a user, I want to be able to pair or create a learning group based on:
   - A specific point in learning a language
     - Ex: Ch 4 of Learn You a Haskell
+- As a user, I want to be able to login through github
 - As a user, I want to have a profile that:
   - Shows topics I want to create a group for or pair on
   - Shows whether I'm interested in remote/local pairing or both
   - Shows proximity of where I'd like to meet up on a map - a radius
 - As a user, I want to be able to find other users to group/pair with
+
+### APIS
+- MapBox
+- GitHub
+- Muut
 
 ## Current TO DO
 

@@ -47,6 +47,7 @@ GEM
     timecop (0.7.1)
     tzinfo (1.1.0)
       thread_safe (~> 0.1)
+    vcr (2.9.0)
 
 PLATFORMS
   ruby
@@ -57,3 +58,4 @@ DEPENDENCIES
   rspec (~> 2.14.1)
   solid_use_case (~> 1.0.2)
   timecop (~> 0.7.1)
+  vcr
