@@ -15,7 +15,6 @@ A not so simple app to match coders together for learning, pair-programming, mak
 
 ## Current TO DO
 
-- work on RespondToInvite use case - have invite types - create a pair group or invite to join existing group
 
 ## User Stories (later)
 
