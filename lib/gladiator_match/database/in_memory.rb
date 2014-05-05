@@ -24,26 +24,51 @@ module GladiatorMatch
       # # # # #
 
       def all_users
-        @users.values
+        @users.values.map do |attrs|
+          User.new(attrs)
+        end
       end
 
       def create_user(attrs)
-        id = (@user_id_counter += 1)
-        attrs[:id] = id
+        attrs[:id] = (@user_id_counter += 1)
 
-        User.new(attrs).tap {|user| @users[id] = user }
+        User.new(attrs).tap {|user| @users[user.id] = attrs }
       end
 
       def get_user(uid, groups: false)
-        user = @users[uid]
+        attrs = @users[uid]
+        user = User.new(attrs)
         if groups
           user.groups = get_groups_by_user(user.id)
         end
         user
       end
 
+      # def all_users
+      #   @users.values
+      # end
+
+      # def create_user(attrs)
+      #   id = (@user_id_counter += 1)
+      #   attrs[:id] = id
+
+      #   User.new(attrs).tap {|user| @users[id] = user }
+      # end
+
+      # def get_user(uid, groups: false)
+      #   user = @users[uid]
+      #   if groups
+      #     user.groups = get_groups_by_user(user.id)
+      #   end
+      #   user
+      # end
+
+      # def get_user_by_login(github_login)
+      #   @users.values.find { |user| user.github_login == github_login }
+      # end
+      
       def get_user_by_login(github_login)
-        @users.values.find { |user| user.github_login == github_login }
+        all_users.find { |user| user.github_login == github_login }
       end
 
       def get_user_by_session(sid)
@@ -129,9 +154,15 @@ module GladiatorMatch
       # Queries #
       # # # # # #
 
+      # def get_users_by_group(gid)
+      #   group_hashes = @memberships.select { |memb| memb[:group_id] == gid }
+      #   users = group_hashes.map { |memb| @users[memb[:user_id]]}
+      # end
+
       def get_users_by_group(gid)
         group_hashes = @memberships.select { |memb| memb[:group_id] == gid }
-        users = group_hashes.map { |memb| @users[memb[:user_id]]}
+        users_attrs = group_hashes.map { |memb| @users[memb[:user_id]]}
+        users_attrs.map { |attrs| User.new(attrs) }
       end
 
       def get_groups_by_user(uid)

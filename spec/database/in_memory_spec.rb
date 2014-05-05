@@ -142,6 +142,7 @@ describe GladiatorMatch::Database::InMemory do
 
     it "gets all users for a group" do
       group_1_users = db.get_group(@group_1.id, users: true).users
+      # binding.pry
       group_1_users_names = group_1_users.map(&:first_name)
       expect(group_1_users_names).to include('Mario', 'Luigi')
       expect(group_1_users_names).to_not include('Peach')
