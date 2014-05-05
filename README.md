@@ -24,6 +24,9 @@ x db create and get interest
 - use case - create user
 - db update create use to have new attr_accessors
 
+## Later Fixes
+- Geocoder doesn't return nil for some invalid coords - ex, 101 Mario Cart World, Austin, Tx returns the coords for Austin, Tx
+- Create Use use case - figure out how to stub Geocoder.coordinates
 
 ## User Stories (later)
 

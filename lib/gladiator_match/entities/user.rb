@@ -5,6 +5,7 @@ module GladiatorMatch
 
     def intialize(attrs)
       @github_login = ''
+      @interests = []
       super(attrs)
     end
   end

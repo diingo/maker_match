@@ -2,12 +2,20 @@ require 'spec_helper'
 
 describe GladiatorMatch::FindUser, pending: true do
 
-  (:result) { described_class.run(@params) }
+  let(:result) { described_class.run(@params) }
   before do
 
   end
   context 'failure' do
-    it "ensures location searched for exists"
+    xit "ensures location searched for exists" do
+      VCR.use_cassette('invalid_location') do
+        coords = Geocoder.coordinates('112 Mario Cart World, Austin, Tx')
+        expect(coords).to be_nil
+
+        expect(result.success?).to eq(false)
+        expect(result.error).to eq(:invalid_location)
+      end
+    end
   end
 end
 
