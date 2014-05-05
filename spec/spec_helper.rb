@@ -24,3 +24,8 @@ RSpec.configure do |config|
     GladiatorMatch.instance_variable_set(:@__db_instance, nil)
   end
 end
+
+VCR.configure do |c|
+  c.cassette_library_dir = 'spec/vcr_cassettes'
+  c.hook_into :webmock
+end

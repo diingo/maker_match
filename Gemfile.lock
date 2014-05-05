@@ -21,6 +21,7 @@ GEM
     debugger-ruby_core_source (1.3.2)
     deterministic (0.2.0)
     diff-lcs (1.2.5)
+    geocoder (1.2.0)
     i18n (0.6.9)
     json (1.8.1)
     method_source (0.8.2)
@@ -54,8 +55,10 @@ PLATFORMS
 
 DEPENDENCIES
   activemodel (~> 4.1.0)
+  geocoder
+  json
   pry-debugger (~> 0.2.2)
   rspec (~> 2.14.1)
   solid_use_case (~> 1.0.2)
   timecop (~> 0.7.1)
-  vcr
+  vcr (~> 2.9.0)

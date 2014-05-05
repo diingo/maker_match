@@ -3,6 +3,9 @@ require 'yaml'
 require 'solid_use_case'
 # this library allows us to generate a unique random id for sessions
 require 'securerandom'
+require 'vcr'
+require 'json'
+require 'geocoder'
 
 module GladiatorMatch
   def self.db

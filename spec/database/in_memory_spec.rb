@@ -108,6 +108,15 @@ describe GladiatorMatch::Database::InMemory do
     end
   end
 
+  describe 'Interests' do
+
+    xit 'creates an interest' do
+      interest = db.create_interest(name: 'haskell', expertise: 'beginner')
+    end
+
+    it 'gets an interest'
+  end
+
   describe 'Queries' do
 
     before do
