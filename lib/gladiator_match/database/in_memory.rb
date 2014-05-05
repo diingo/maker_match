@@ -10,11 +10,13 @@ module GladiatorMatch
         @user_id_counter = 100
         @group_id_counter = 200
         @invite_id_counter = 300
+        @interest_id_counter = 400
         @users = {}
         @memberships = []
         @groups = {}
         @sessions = {}
         @invites = {}
+        @interests = {}
       end
 
       # # # # #
@@ -106,6 +108,21 @@ module GladiatorMatch
 
       def get_invite(iid)
         @invites[iid]
+      end
+
+      # # # # #  #
+      # Interest #
+      # # # # #  #
+
+      def create_interest(attrs)
+        id = (@interest_id_counter += 1)
+        attrs[:id] = id
+
+        Interest.new(attrs).tap {|interest| @interests[id] = interest }
+      end
+
+      def get_interest(iid)
+        @interests[iid]
       end
 
       # # # # # #

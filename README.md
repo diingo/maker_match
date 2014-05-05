@@ -19,6 +19,10 @@ A not so simple app to match coders together for learning, pair-programming, mak
 - Muut
 
 ## Current TO DO
+- db create and get interest
+- use case - create interest
+- use case - create user
+- db update create use to have new attr_accessors
 
 
 ## User Stories (later)

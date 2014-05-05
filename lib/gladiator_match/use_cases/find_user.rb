@@ -1,1 +1,4 @@
-find_user.rb
+module GladiatorMatch
+  class FindUser < UseCase
+  end
+end
