@@ -17,7 +17,8 @@ module GladiatorMatch
       if invite.group_id.nil?
         group = GladiatorMatch.db.create_group(users: [inviter, invitee])
       else
-        # is this the correct approach?
+        # is this the correct approach? .. it's not!! 
+        # TO DO: change group.users << invitee to use a db method instead
         group = GladiatorMatch.db.get_group(invite.group_id)
         group.users << invitee
       end

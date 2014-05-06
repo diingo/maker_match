@@ -6,5 +6,7 @@ module GladiatorMatch
       @topic = "Introduce Yourselves"
       super(attrs)
     end
+
+    
   end
 end

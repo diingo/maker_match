@@ -17,3 +17,8 @@ gem 'solid_use_case', '~>1.0.2'
 # Maps and Geodocding
 gem 'geocoder'
 gem 'json'
+
+# Database
+gem 'pg'
+gem 'activerecord', '~> 4.1.0'
+gem 'active_record_tasks', '~> 1.0.3'

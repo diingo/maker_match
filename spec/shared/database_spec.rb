@@ -55,13 +55,13 @@ shared_examples 'a database' do
       expect(db.all_users.map &:first_name).to include('Peach', 'Harley')
     end
 
-    it "gets a user by github_login" do
+    xit "gets a user by github_login" do
       retrieved_user = db.get_user_by_login(peach.github_login)
 
       expect(retrieved_user.first_name).to eq('Peach')
     end
 
-    it "gets a user by session key/id" do
+    xit "gets a user by session key/id" do
       sid = db.create_session(user_id: peach.id)
       retrieved_user = db.get_user_by_session(sid)
       expect(retrieved_user.first_name).to eq('Peach')
@@ -81,15 +81,16 @@ shared_examples 'a database' do
 
     it "gets a group" do
       group = db.create_group(users: [mario, luigi], topic: 'haskell')
-      retrieved_group = db.get_group(group.id)
+      retrieved_group = db.get_group(group.id, users: true)
 
       expect(retrieved_group.topic).to eq('haskell')
+      expect(retrieved_group.users.map &:first_name).to include 'Mario', 'Luigi'
     end
   end
 
   describe 'Sessions' do
 
-    it "creates and gets a session" do
+    xit "creates and gets a session" do
       session_id = db.create_session(user_id: mario.id)
       retrieved_session = db.get_session(session_id)
       expect(retrieved_session[:user_id]).to eq(mario.id)
@@ -108,14 +109,14 @@ shared_examples 'a database' do
 
   describe 'Interests' do
 
-    it 'creates an interest' do
+    xit 'creates an interest' do
       interest = db.create_interest(name: 'haskell', expertise: 'beginner')
 
       expect(interest.name).to eq('haskell')
       expect(interest.expertise).to eq('beginner')
     end
 
-    it 'gets an interest' do
+    xit 'gets an interest' do
       interest = db.create_interest(name: 'java', expertise: 'beginner')
       retrieved_interest = db.get_interest(interest.id)
 
@@ -130,7 +131,7 @@ shared_examples 'a database' do
       @group_2 = db.create_group(users: [mario, peach], topic: 'html')
     end
 
-    it "gets all groups for a user" do
+    xit "gets all groups for a user" do
       mario_groups = db.get_user(mario.id, groups: true).groups
       expect(mario_groups.count).to eq(2)
 
@@ -138,7 +139,7 @@ shared_examples 'a database' do
       expect(group_topics).to include('haskell', 'html')
     end
 
-    it "gets all users for a group" do
+    xit "gets all users for a group" do
       group_1_users = db.get_group(@group_1.id, users: true).users
       # binding.pry
       group_1_users_names = group_1_users.map(&:first_name)

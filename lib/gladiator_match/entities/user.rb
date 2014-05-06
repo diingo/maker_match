@@ -1,7 +1,10 @@
 module GladiatorMatch
   class User < Entity
-    attr_accessor :id, :first_name, :last_name, :github_login, :email, :groups 
-    attr_accessor :interests, :location, :remote, :latitude, :longitude
+    attr_accessor :id, :first_name, :last_name, :github_login, :email
+    # not invidually tested in db spec
+    attr_accessor :location, :remote, :latitude, :longitude
+    # user has many of these:
+    attr_accessor :interests, :groups
 
     def intialize(attrs)
       @github_login = ''

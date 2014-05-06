@@ -66,14 +66,14 @@ module GladiatorMatch
       # def get_user_by_login(github_login)
       #   @users.values.find { |user| user.github_login == github_login }
       # end
-      
+
       def get_user_by_login(github_login)
         all_users.find { |user| user.github_login == github_login }
       end
 
       def get_user_by_session(sid)
         user_id = @sessions[sid][:user_id]
-        user = get_user(user_id)
+        user = get_user(user_id, groups: true)
       end
 
       # # # # #
