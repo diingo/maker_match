@@ -109,14 +109,14 @@ shared_examples 'a database' do
 
   describe 'Interests' do
 
-    xit 'creates an interest' do
+    it 'creates an interest' do
       interest = db.create_interest(name: 'haskell', expertise: 'beginner')
 
       expect(interest.name).to eq('haskell')
       expect(interest.expertise).to eq('beginner')
     end
 
-    xit 'gets an interest' do
+    it 'gets an interest' do
       interest = db.create_interest(name: 'java', expertise: 'beginner')
       retrieved_interest = db.get_interest(interest.id)
 

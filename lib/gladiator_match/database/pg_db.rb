@@ -37,6 +37,9 @@ module GladiatorMatch
         belongs_to :group
       end
 
+      class Interest < ActiveRecord::Base
+      end
+
       def create_user(attrs)
         ar_user = User.create(attrs)
         GladiatorMatch::User.new(ar_user.attributes)
@@ -96,7 +99,21 @@ module GladiatorMatch
 
       def get_invite(iid)
         ar_invite = Invite.find(iid)
-        entity_invite = Invite.new(ar_invite.attributes)
+        entity_invite = GladiatorMatch::Invite.new(ar_invite.attributes)
+      end
+
+      # # # # #  #
+      # Interest #
+      # # # # #  #
+
+      def create_interest(attrs)
+        ar_interest = Interest.create(attrs)
+        entity_interest = GladiatorMatch::Interest.new(ar_interest.attributes)
+      end
+
+      def get_interest(iid)
+        ar_interest = Interest.find(iid)
+        entity_interest = GladiatorMatch::Interest.new(ar_interest.attributes)
       end
     end
   end
