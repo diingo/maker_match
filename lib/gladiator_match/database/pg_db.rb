@@ -31,6 +31,9 @@ module GladiatorMatch
         has_many :invites
       end
 
+      class Session < ActiveRecord::Base
+      end
+
       # should there be some relationship with users
       # even though interest only has two columns for user ids
       class Invite < ActiveRecord::Base
@@ -114,6 +117,23 @@ module GladiatorMatch
       def get_interest(iid)
         ar_interest = Interest.find(iid)
         entity_interest = GladiatorMatch::Interest.new(ar_interest.attributes)
+      end
+
+      # # # # #  #
+      # Session ##
+      # # # # #  #
+
+      def create_session(attrs)
+        # generate unique crazy id for session
+        sid = SecureRandom.uuid
+        ar_session = Session.create(session_key: sid, user_id: attrs[:user_id])
+        sid
+      end
+
+      def get_session(skey)
+        ar_session = Session.where(session_key: skey).first
+        # may need to change :id to :skey for both here and inmemory db
+        { id: ar_session.session_key, user_id: ar_session.user_id }
       end
     end
   end

@@ -90,7 +90,7 @@ shared_examples 'a database' do
 
   describe 'Sessions' do
 
-    xit "creates and gets a session" do
+    it "creates and gets a session" do
       session_id = db.create_session(user_id: mario.id)
       retrieved_session = db.get_session(session_id)
       expect(retrieved_session[:user_id]).to eq(mario.id)
