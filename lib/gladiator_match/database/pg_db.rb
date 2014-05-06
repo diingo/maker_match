@@ -93,6 +93,11 @@ module GladiatorMatch
         ar_invite = Invite.create(attrs)
         entity_invite = GladiatorMatch::Invite.new(ar_invite.attributes)
       end
+
+      def get_invite(iid)
+        ar_invite = Invite.find(iid)
+        entity_invite = Invite.new(ar_invite.attributes)
+      end
     end
   end
 end
