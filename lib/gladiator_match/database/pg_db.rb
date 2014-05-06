@@ -62,11 +62,18 @@ module GladiatorMatch
         ar_users.map { |ar_user| User.new(ar_user.attributes) }
       end
 
-      # def get_user_by_login(github_login)
-      #   ar_user = User.where(github_login: github_login).first
-      #   entity_user = GladiatorMatch::User.new(ar_user.attributes)
-      #   entity_user.groups = ar_user.groups
-      # end
+      def get_user_by_login(github_login)
+        ar_user = User.where(github_login: github_login).first
+        entity_user = GladiatorMatch::User.new(ar_user.attributes)
+        entity_user.groups = ar_user.groups
+        entity_user
+      end
+
+      def get_user_by_session(sid)
+        ar_session = Session.where(session_key: sid).first
+        ar_user = User.find(ar_session.user_id)
+        entity_user = get_user(ar_user.id, groups: true)
+      end
 
       def create_group(attrs)
         # AR Group created with default topic
@@ -134,6 +141,20 @@ module GladiatorMatch
         ar_session = Session.where(session_key: skey).first
         # may need to change :id to :skey for both here and inmemory db
         { id: ar_session.session_key, user_id: ar_session.user_id }
+      end
+
+      # # # # #  #
+      # Queries ##
+      # # # # #  #
+
+      def get_users_by_group(gid)
+        ar_users = Group.find(gid).users
+        ar_users.map { |ar_user| GladiatorMatch::User.new(ar_user.attributes) }
+      end
+
+      def get_groups_by_user(uid)
+        ar_groups = User.find(uid).groups
+        ar_groups.map { |ar_group| GladiatorMatch::Group.new(ar_group.attributes) }
       end
     end
   end

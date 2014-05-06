@@ -55,13 +55,13 @@ shared_examples 'a database' do
       expect(db.all_users.map &:first_name).to include('Peach', 'Harley')
     end
 
-    xit "gets a user by github_login" do
+    it "gets a user by github_login" do
       retrieved_user = db.get_user_by_login(peach.github_login)
 
       expect(retrieved_user.first_name).to eq('Peach')
     end
 
-    xit "gets a user by session key/id" do
+    it "gets a user by session key/id" do
       sid = db.create_session(user_id: peach.id)
       retrieved_user = db.get_user_by_session(sid)
       expect(retrieved_user.first_name).to eq('Peach')
@@ -131,18 +131,24 @@ shared_examples 'a database' do
       @group_2 = db.create_group(users: [mario, peach], topic: 'html')
     end
 
-    xit "gets all groups for a user" do
+    it "gets all groups for a user" do
       mario_groups = db.get_user(mario.id, groups: true).groups
       expect(mario_groups.count).to eq(2)
+      expect(mario_groups.map(&:topic)).to include('haskell', 'html')
 
-      group_topics = mario_groups.map(&:topic)
-      expect(group_topics).to include('haskell', 'html')
+      mario_groups_v2 = db.get_groups_by_user(mario.id)
+      expect(mario_groups_v2.count).to eq(2)
+      expect(mario_groups_v2.map &:topic).to include('haskell','html')
     end
 
-    xit "gets all users for a group" do
+    it "gets all users for a group" do
       group_1_users = db.get_group(@group_1.id, users: true).users
-      # binding.pry
       group_1_users_names = group_1_users.map(&:first_name)
+      expect(group_1_users_names).to include('Mario', 'Luigi')
+      expect(group_1_users_names).to_not include('Peach')
+
+      group_1_users_v2 = db.get_users_by_group(@group_1.id)
+      group_1_users_names_v2 = group_1_users_v2.map(&:first_name)
       expect(group_1_users_names).to include('Mario', 'Luigi')
       expect(group_1_users_names).to_not include('Peach')
     end
