@@ -4,7 +4,7 @@ module GladiatorMatch
       return failure(:invalid_login) if inputs[:github_login].empty?
       return failure(:invalid_interest) if !valid_interests?(inputs[:interests])
       success()
-      # return failure(:invalid_location) if Geocoder.coordinates(inputs[:location]).nil?
+      return failure(:invalid_location) if Geocoder.coordinates(inputs[:location]).nil?
       return failure(:invalid_name) if !valid_names?(inputs)
     end
 
@@ -15,7 +15,7 @@ module GladiatorMatch
     def valid_names?(inputs)
       # order is important here because nil.empty? will return error
       # is this a good way to do this?
-      inputs[:first_name].nil? == false && inputs[:lastname] == false && inputs[:first_name].empty? == false && inputs[:last_name].empty? == false
+      inputs[:first_name].nil? == false && inputs[:last_name].nil? == false && inputs[:first_name].empty? == false && inputs[:last_name].empty? == false
     end
   end
 end
