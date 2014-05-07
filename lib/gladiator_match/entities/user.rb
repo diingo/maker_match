@@ -1,3 +1,5 @@
+# include Geocoder::Model::Mongoid
+
 module GladiatorMatch
   class User < Entity
     attr_accessor :id, :first_name, :last_name, :github_login, :email
@@ -5,6 +7,8 @@ module GladiatorMatch
     attr_accessor :location, :remote, :latitude, :longitude
     # user has many of these:
     attr_accessor :interests, :groups
+
+    # geocoded_by :latitude, :longitude
 
     def intialize(attrs)
       @github_login = ''

@@ -24,6 +24,7 @@ x db create and get interest
 - update database_spec to have expectation that returned values are entities
 - use case - create user
 - db update create use to have new attr_accessors
+- see find_user_spec note - the stub for invalid location is probably being overriden by the before block stub - see note there
 
 ## Later Fixes
 - Geocoder doesn't return nil for some invalid coords - ex, 101 Mario Cart World, Austin, Tx returns the coords for Austin, Tx

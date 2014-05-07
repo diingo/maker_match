@@ -10,15 +10,17 @@ require 'vcr'
 require 'json'
 require 'geocoder'
 
+
+require_relative 'gladiator_match/entity.rb'
+require_relative 'gladiator_match/use_case.rb'
+
+# require_relative 'gladiator_match/entities/user.rb'
+Dir["#{File.dirname(__FILE__)}/gladiator_match/use_cases/*.rb"].each { |f| require(f) }
+Dir["#{File.dirname(__FILE__)}/gladiator_match/database/*.rb"].each { |f| require(f) }
+Dir["#{File.dirname(__FILE__)}/gladiator_match/entities/*.rb"].each { |f| require(f) }
+
 module GladiatorMatch
   def self.db
     @__db_instance ||= Database::InMemory.new
   end
 end
-
-require_relative 'gladiator_match/entity.rb'
-require_relative 'gladiator_match/use_case.rb'
-
-Gem.find_files("gladiator_match/database/*.rb").each { |path| require path }
-Gem.find_files("gladiator_match/entities/*.rb").each { |path| require path }
-Gem.find_files("gladiator_match/use_cases/*.rb").each { |path| require path }

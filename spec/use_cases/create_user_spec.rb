@@ -63,6 +63,7 @@ describe GladiatorMatch::CreateUser do
       expect(result.user.first_name).to eq('Plum')
       expect(result.user.github_login).to eq('plum_pits')
       expect(result.user.remote).to eq(true)
+      expect(result.user.interests).to be_a(Array)
       expect(result.user.interests.map(&:name)).to include('haskell', 'java')
       expect(result.user.latitude).to eq(29.6185208)
       expect(result.user.longitude).to eq(-95.6090009)
