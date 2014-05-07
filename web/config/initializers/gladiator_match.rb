@@ -1,0 +1,1 @@
+require '../lib/gladiator_match.rb'
