@@ -4,7 +4,7 @@ module GladiatorMatch
   class User < Entity
     attr_accessor :id, :first_name, :last_name, :github_login, :email
     # not invidually tested in db spec
-    attr_accessor :location, :remote, :latitude, :longitude
+    attr_accessor :location, :remote, :latitude, :longitude, :password
     # user has many of these:
     attr_accessor :interests, :groups
 

@@ -66,6 +66,11 @@ shared_examples 'a database' do
       retrieved_user = db.get_user_by_session(sid)
       expect(retrieved_user.first_name).to eq('Peach')
     end
+
+    it "gets a user by email" do
+      retrieved_user = db.get_user_by_email(luigi.email)
+      expect(retrieved_user.first_name).to eq('Luigi')
+    end
   end
 
 
@@ -152,5 +157,6 @@ shared_examples 'a database' do
       expect(group_1_users_names).to include('Mario', 'Luigi')
       expect(group_1_users_names).to_not include('Peach')
     end
+
   end
 end

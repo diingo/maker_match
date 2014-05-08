@@ -44,6 +44,13 @@ module GladiatorMatch
         user
       end
 
+      def get_user_by_email(email)
+        # binding.pry
+        user_attrs = @users.values.find { |attrs| attrs[:email] == email }
+        return nil if user_attrs.nil?
+        User.new(user_attrs)
+      end
+
       # def all_users
       #   @users.values
       # end
