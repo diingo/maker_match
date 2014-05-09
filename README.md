@@ -19,8 +19,6 @@ A not so simple app to match coders together for learning, pair-programming, mak
 - Muut
 
 ## Current TO DO
-x use case - create interest
-x db create and get interest
 - update database_spec to have expectation that returned values are entities
 - use case - create user
 - db update create use to have new attr_accessors

@@ -44,8 +44,13 @@ module GladiatorMatch
       end
 
       def create_user(attrs)
-        ar_user = User.create(attrs)
-        GladiatorMatch::User.new(ar_user.attributes)
+        keepers = [:first_name, :last_name, :email, :github_login, :remote, :latitude, :longitude]
+
+        ar_attrs = attrs.keep_if { |k,v| keepers.include?(k)}
+        ar_user = User.create(ar_attrs)
+
+        attrs.merge!(ar_attrs)
+        GladiatorMatch::User.new(ar_attrs)
       end
 
       def get_user(uid, groups: false)

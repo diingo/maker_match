@@ -52,7 +52,7 @@ describe GladiatorMatch::RespondToInvite do
     # now we run the use case by calling the variable 'result'
     # thus, pending? should now be false
     expect(result.success?).to eq(true)
-    expect(invite.pending?).to eq(false)
+    expect(result.invite.pending?).to eq(false)
     expect(result.invite.id).to eq(invite.id)
   end
 

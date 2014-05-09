@@ -76,6 +76,7 @@ DEPENDENCIES
   active_record_tasks (~> 1.0.3)
   activemodel (~> 4.1.0)
   activerecord (~> 4.1.0)
+  activesupport
   geocoder
   json
   pg

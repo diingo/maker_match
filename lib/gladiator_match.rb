@@ -9,6 +9,7 @@ require 'securerandom'
 require 'vcr'
 require 'json'
 require 'geocoder'
+require 'active_support/core_ext/object/blank'
 
 
 require_relative 'gladiator_match/entity.rb'

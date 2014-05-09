@@ -1,12 +1,26 @@
 shared_examples 'a database' do
+
   let(:db) { described_class.new }
+  let(:interest_1) { db.create_interest(name: 'haskell', expertise: 'beginner') }
+  let(:interest_2) { db.create_interest(name: 'java', expertise: 'beginner') }
+
+  let(:toad) {
+    db.create_user(
+      :first_name => 'Toad',
+      :last_name => 'Toad',
+      :email => 'toad@example.com',
+      :github_login => 'toad',
+      :interests => []
+    )
+  }
 
   let(:mario) {
     db.create_user(
       :first_name => 'Mario',
       :last_name => 'Mario',
       :email => 'mario@example.com',
-      :github_login => 'mario_mario'
+      :github_login => 'mario_mario',
+      :interests => [interest_1, interest_2]
     )
   }
 
@@ -15,7 +29,8 @@ shared_examples 'a database' do
       :first_name => 'Luigi',
       :last_name => 'Mario',
       :email => 'luigi@example.com',
-      :github_login => 'luigi_mario'
+      :github_login => 'luigi_mario',
+      :interests => [interest_2]
     )
   }
 
@@ -24,7 +39,8 @@ shared_examples 'a database' do
       :first_name => 'Peach',
       :last_name => 'Peach',
       :email => 'peach@example.com',
-      :github_login => 'peach'
+      :github_login => 'peach',
+      :interests => [interest_1]
     )
   }
 
@@ -132,7 +148,7 @@ shared_examples 'a database' do
   describe 'Queries' do
 
     before do
-      @group_1 = db.create_group(users: [mario, luigi], topic: 'haskell')
+      @group_1 = db.create_group(users: [toad, mario, luigi], topic: 'haskell')
       @group_2 = db.create_group(users: [mario, peach], topic: 'html')
     end
 
@@ -158,5 +174,12 @@ shared_examples 'a database' do
       expect(group_1_users_names).to_not include('Peach')
     end
 
+    it "gets all users with a specified interest" do
+      # ensure our let statements create these users
+      users = db.get_users_by_interest(name: interest_1.name, expertise: interest_1.expertise)
+      expect(users.map(&:first_name)).to include('Mario', 'Peach')
+      expect(users.map(&:first_name)).to_not include('Luigi')
+
+    end
   end
 end

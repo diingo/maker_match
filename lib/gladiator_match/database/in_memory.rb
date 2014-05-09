@@ -45,34 +45,10 @@ module GladiatorMatch
       end
 
       def get_user_by_email(email)
-        # binding.pry
         user_attrs = @users.values.find { |attrs| attrs[:email] == email }
         return nil if user_attrs.nil?
         User.new(user_attrs)
       end
-
-      # def all_users
-      #   @users.values
-      # end
-
-      # def create_user(attrs)
-      #   id = (@user_id_counter += 1)
-      #   attrs[:id] = id
-
-      #   User.new(attrs).tap {|user| @users[id] = user }
-      # end
-
-      # def get_user(uid, groups: false)
-      #   user = @users[uid]
-      #   if groups
-      #     user.groups = get_groups_by_user(user.id)
-      #   end
-      #   user
-      # end
-
-      # def get_user_by_login(github_login)
-      #   @users.values.find { |user| user.github_login == github_login }
-      # end
 
       def get_user_by_login(github_login)
         all_users.find { |user| user.github_login == github_login }
@@ -91,7 +67,7 @@ module GladiatorMatch
         id = (@group_id_counter += 1)
         attrs[:id] = id
 
-        group = Group.new(attrs).tap {|group| @groups[id] = group }
+        group = Group.new(attrs).tap {|group| @groups[id] = attrs }
 
         attrs[:users].each do |user|
           @memberships << { group_id: group.id, user_id: user.id}
@@ -101,7 +77,10 @@ module GladiatorMatch
       end
 
       def get_group(gid, users: false)
-        group = @groups[gid]
+        group_attrs = @groups[gid]
+        return nil if group_attrs.nil?
+
+        group = Group.new(group_attrs)
         if users
           group.users = get_users_by_group(group.id)
         end
@@ -120,7 +99,7 @@ module GladiatorMatch
       end
 
       def get_session(sid)
-        # binding.pry
+
         @sessions[sid]
       end
 
@@ -129,17 +108,24 @@ module GladiatorMatch
       # # # # # #
 
       def create_invite(attrs)
-        id = (@invite_id_counter += 1)
-        attrs[:id] = id
-        invite = Invite.new(attrs)
-
-        @invites[id] = invite
-
-        invite
+        attrs[:id] = (@invite_id_counter += 1)
+        Invite.new(attrs).tap { |invite| @invites[attrs[:id]] = attrs }
       end
 
       def get_invite(iid)
-        @invites[iid]
+        invite_attrs = @invites[iid]
+        return nil if invite_attrs.nil?
+
+        Invite.new(invite_attrs)
+      end
+
+      # TO DO
+      def update_invite(updated_invite)
+        retrieved_invite = @invites[updated_invite.id]
+        updated_invite_attrs = updated_invite.instance_values
+        updated_invite_attrs.each do |attr_type, new_value|
+          # retrieved_invite.send(:attr_type = new_value)
+        end
       end
 
       # # # # #  #
@@ -174,8 +160,50 @@ module GladiatorMatch
 
       def get_groups_by_user(uid)
         user_hashes = @memberships.select { |memb| memb[:user_id] == uid }
-        groups = user_hashes.map { |memb| @groups[memb[:group_id]]}
+        group_attrs = user_hashes.map { |memb| @groups[memb[:group_id]]}
+        group_attrs.map { |attrs| Group.new(attrs) }
       end
+
+      def get_users_by_interest(attrs)
+
+        selected_user_attrs = []
+        selected_users = []
+        @users.values.each do |user_attrs|
+          desired_interest = user_attrs[:interests].select do |interest|
+            interest.name == attrs[:name] && interest.expertise == attrs[:expertise]
+          end
+
+          # if user has the desired interests matched, add to selected_users array
+          selected_user_attrs << user_attrs unless desired_interest.empty?
+          selected_users = selected_user_attrs.map do |user_attr|
+            User.new(user_attr)
+          end
+        end
+
+        selected_users
+      end
+
+
+      # def get_users_by_interest(attrs)
+
+      #   selected_users = []
+
+      #   @users.values.each do |user_attrs|
+      #     desired_interest = user_attrs[:interests].select do |interest|
+      #       interest.name == attrs[:name] && interest.expertise == attrs[:expertise]
+      #     end
+
+      #     # if user has the desired interests matched, add user_attrs to selected_users array
+      #     # then map the user objects
+      #     binding.pry
+      #     selected_users << user_attrs unless desired_interest.empty?
+      #     selected_users = selected_users.map do |user_attr|
+      #       User.new(user_attr)
+      #     end
+      #   end
+
+      #   selected_users
+      # end
 
     end
   end
