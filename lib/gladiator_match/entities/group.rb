@@ -7,6 +7,5 @@ module GladiatorMatch
       super(attrs)
     end
 
-    
   end
 end

@@ -107,6 +107,28 @@ shared_examples 'a database' do
       expect(retrieved_group.topic).to eq('haskell')
       expect(retrieved_group.users.map &:first_name).to include 'Mario', 'Luigi'
     end
+
+    it "updates a group's basic attributes" do
+      group = db.create_group(users: [mario, luigi], topic: 'haskell')
+
+      group.topic = 'plumbing'
+      db.update_group(group)
+      retrieved_group = db.get_group(group.id)
+
+      retrieved_group = db.get_group(retrieved_group.id, users: true)
+      expect(retrieved_group.users.map(&:first_name)).to include('Mario', 'Luigi')
+      expect(retrieved_group.topic).to eq('plumbing')
+    end
+
+    it "updates a group's users" do
+      group = db.create_group(users: [mario, luigi], topic: 'powerups')
+      group.users << peach
+      db.update_group(group)
+
+      retrieved_group = db.get_group(group.id, users: true)
+      expect(retrieved_group.users.map(&:first_name)).to include('Mario', 'Luigi', 'Peach')
+      expect(retrieved_group.topic).to eq('powerups')
+    end
   end
 
   describe 'Sessions' do

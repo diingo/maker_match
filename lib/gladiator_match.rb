@@ -10,6 +10,8 @@ require 'vcr'
 require 'json'
 require 'geocoder'
 require 'active_support/core_ext/object/blank'
+# JSON
+# require 'active_support/core_ext/object/json'
 
 
 require_relative 'gladiator_match/entity.rb'

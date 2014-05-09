@@ -87,6 +87,28 @@ module GladiatorMatch
         group
       end
 
+      def update_group(group)
+        retrieved_attrs = @groups[group.id]
+        # get the instance attributes as a hash and convert the keys from strings to symbols
+        # TO DO
+        updated_attrs = Hash[group.instance_values.map do |k,v|
+          [k.to_sym,v]
+        end]
+        # binding.pry
+        updated_attrs.each do |attr_type, new_value|
+          retrieved_attrs[attr_type] = new_value
+        end
+
+        updated_attrs[:users].each do |user|
+          hash = { group_id: group.id, user_id: user.id}
+
+          @memberships << { group_id: group.id, user_id: user.id} unless @memberships.include?(hash)
+        end
+
+        binding.pry
+        Group.new(updated_attrs)
+      end
+
       # # # # # #
       # Session #
       # # # # # #
