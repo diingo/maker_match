@@ -32,7 +32,8 @@ describe GladiatorMatch::LogIn do
   context "success" do
     it 'creates a session - no user id yet (that will be added to the session later after we run create user use case)' do
       expect(result.success?).to eq(true)
-      expect(result.session)
+      expect(result.session_key).to be_a(String)
+      expect(result.session_key.length > 20). to eq(true)
     end
   end
 
