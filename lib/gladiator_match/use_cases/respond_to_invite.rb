@@ -19,19 +19,17 @@ module GladiatorMatch
       if invite.group_id.nil?
         group = GladiatorMatch.db.create_group(users: [inviter, invitee])
       else
-        # is this the correct approach? .. it's not!!
-        # TO DO: change group.users << invitee to use a db method instead
-        group = GladiatorMatch.db.get_group(invite.group_id)
+        retrieved_group = GladiatorMatch.db.get_group(invite.group_id)
 
         # TO DO: complete this
         # such that the membership join table is updated as well
-        group.users << invitee
-        GladiatorMatch.db.update_group(group)
+        retrieved_group.users << invitee
+        GladiatorMatch.db.update_group(retrieved_group)
 
-        updated_group = GladiatorMatch.db.get_group(group.id)
+        group = GladiatorMatch.db.get_group(retrieved_group.id, users: true)
       end
 
-      success(invite: updated_invite, group: updated_group)
+      success(invite: updated_invite, group: group)
     end
   end
 end

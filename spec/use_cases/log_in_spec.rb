@@ -1,7 +1,7 @@
 require_relative '../spec_helper.rb'
 
 describe GladiatorMatch::LogIn do
-  # let(:interest_1) { GladiatorMatch.db.create_interest(name: 'haskell', expertise: 'advanced')}
+  let(:interest_1) { GladiatorMatch.db.create_interest(name: 'haskell', expertise: 'advanced')}
   let(:peach) {
     GladiatorMatch.db.create_user(
       :first_name => 'Peach',
