@@ -138,6 +138,13 @@ shared_examples 'a database' do
       retrieved_session = db.get_session(session_id)
       expect(retrieved_session[:user_id]).to eq(mario.id)
     end
+
+    # TO DO: 
+    it "can create session with no user id" do
+      session_id = db.create_session
+      retrieved_session = db.get_session(session_id)
+      expect(retrieved_session[:user_id]).to be_nil
+    end
   end
 
   describe 'Invites' do

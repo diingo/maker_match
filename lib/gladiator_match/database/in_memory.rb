@@ -105,7 +105,6 @@ module GladiatorMatch
           @memberships << { group_id: group.id, user_id: user.id} unless @memberships.include?(hash)
         end
 
-        binding.pry
         Group.new(updated_attrs)
       end
 
@@ -113,9 +112,10 @@ module GladiatorMatch
       # Session #
       # # # # # #
 
-      def create_session(attrs)
+      def create_session(attrs = {})
         # generate unique crazy id for session
         sid = SecureRandom.uuid
+        attrs[:user_id] = nil if attrs[:user_id].nil?
         @sessions[sid] = { id: sid, user_id: attrs[:user_id] }
         sid
       end
