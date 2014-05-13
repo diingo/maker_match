@@ -144,10 +144,15 @@ module GladiatorMatch
       # TO DO
       def update_invite(updated_invite)
         retrieved_invite = @invites[updated_invite.id]
-        updated_invite_attrs = updated_invite.instance_values
+        updated_invite_attrs = Hash[updated_invite.instance_values.map do |k,v|
+          [k.to_sym,v]
+        end]
         updated_invite_attrs.each do |attr_type, new_value|
-          # retrieved_invite.send(:attr_type = new_value)
+          retrieved_invite[attr_type] = new_value
         end
+
+        # binding.pry
+        Invite.new(updated_invite_attrs)
       end
 
       # # # # #  #

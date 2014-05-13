@@ -154,6 +154,16 @@ shared_examples 'a database' do
       expect(retrieved_invite.invitee_id).to eq(peach.id)
       expect(retrieved_invite.inviter_id).to eq(mario.id)
     end
+
+    it "updates invites" do
+      invite = db.create_invite(inviter_id: mario.id, invitee_id: peach.id)
+      expect(invite.pending?).to eq(true)
+
+      invite.response = "accept"
+      db.update_invite(invite)
+      updated_invite = db.get_invite(invite.id)
+      expect(updated_invite.pending?).to eq(false)
+    end
   end
 
   describe 'Interests' do
