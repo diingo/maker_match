@@ -42,17 +42,17 @@ describe GladiatorMatch::FindUser do
         expect(result.error).to eq(:invalid_location)
     end
 
-    xit "ensures that the interest searched for  is valid" do
+    it "ensures that the interest searched for  is valid" do
       @params[:interest] = ''
 
       expect(result.success?).to eq(false)
       expect(result.error).to eq(:invalid_interest)
     end
 
-    xit "ensures that a user with the interest exists" do
+    it "ensures that a user with the interest exists" do
       @params[:interest] = interest_2
 
-      expect(result.success).to eq(false)
+      expect(result.success?).to eq(false)
       expect(result.error).to eq(:no_user_with_that_interest)
     end
   end
