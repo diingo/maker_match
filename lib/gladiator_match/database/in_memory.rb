@@ -121,8 +121,15 @@ module GladiatorMatch
       end
 
       def get_session(sid)
-
         @sessions[sid]
+      end
+
+      def update_session(updated_session)
+        retrieved_session = @sessions[updated_session[:id]]
+        # updated_session is already a hash
+        updated_session.each do |attr_type, new_value|
+          retrieved_session[attr_type] = new_value
+        end
       end
 
       # # # # # #

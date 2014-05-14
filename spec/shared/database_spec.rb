@@ -144,6 +144,16 @@ shared_examples 'a database' do
       retrieved_session = db.get_session(session_id)
       expect(retrieved_session[:user_id]).to be_nil
     end
+
+    it "can update a session" do
+      session_id = db.create_session
+      updated_session = db.get_session(session_id)
+      updated_session[:user_id] = peach.id
+      db.update_session(updated_session)
+
+      retrieved_session = db.get_session(session_id)
+      expect(retrieved_session[:user_id]).to eq(peach.id)
+    end
   end
 
   describe 'Invites' do
