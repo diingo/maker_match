@@ -1,4 +1,5 @@
 require 'active_record_tasks'
+require 'dotenv/tasks'
 
 ActiveRecordTasks.configure do |config|
   # These are all the default values

@@ -12,7 +12,8 @@ require 'geocoder'
 require 'active_support/core_ext/object/blank'
 # JSON
 # require 'active_support/core_ext/object/json'
-
+require 'dotenv'
+Dotenv.load
 
 require_relative 'gladiator_match/entity.rb'
 require_relative 'gladiator_match/use_case.rb'

@@ -1,11 +1,17 @@
 Web::Application.routes.draw do
+
+  root 'pages#index'
+
+  get 'pages/index', to: 'pages#index'
+
   # get 'sessions/create'
 
   # get 'users/index'
 
   # get 'users/show'
 
-  get '/auth/:provider/callback', to: 'sessions#create'
+  # get '/auth/:provider/callback', to: 'sessions#create'
+  match '/auth/:provider/callback' => 'sessions#create', via: [:get, :post]
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
