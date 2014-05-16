@@ -176,6 +176,8 @@ GEM
     rake (10.3.1)
     rdoc (4.1.1)
       json (~> 1.4)
+    rest-client (1.6.7)
+      mime-types (>= 1.16)
     rspec (2.14.1)
       rspec-core (~> 2.14.0)
       rspec-expectations (~> 2.14.0)
@@ -246,6 +248,7 @@ DEPENDENCIES
   pg
   pry-debugger (~> 0.2.2)
   rails (= 4.1.0)
+  rest-client
   rspec (~> 2.14.1)
   sass-rails (~> 4.0.0)
   sdoc

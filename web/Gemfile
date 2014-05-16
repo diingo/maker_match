@@ -6,6 +6,8 @@ eval File.read(app_gemfile_path)
 # Authentication
 gem 'omniauth-github'
 
+gem 'rest-client'
+
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.1.0'
 
