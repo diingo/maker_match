@@ -1,22 +1,11 @@
 require_relative '../spec_helper.rb'
 
 describe GladiatorMatch::LogIn do
-  let(:interest_1) { GladiatorMatch.db.create_interest(name: 'haskell', expertise: 'advanced')}
-  let(:peach) {
-    GladiatorMatch.db.create_user(
-      :first_name => 'Peach',
-      :last_name => 'Peach',
-      :email => 'peach@example.com',
-      :github_login => 'peach',
-      :interests => [interest_1],
-      :password => '123'
-    )
-  }
 
   let(:result) { described_class.run(@params) }
 
   before do
-    @params = { github_login: peach.github_login }
+    @params = { github_login: 'peach' }
   end
 
   context "failure" do
@@ -34,6 +23,7 @@ describe GladiatorMatch::LogIn do
       expect(result.success?).to eq(true)
       expect(result.session_key).to be_a(String)
       expect(result.session_key.length > 20). to eq(true)
+      expect(result.github_login).to eq('peach')
     end
   end
 

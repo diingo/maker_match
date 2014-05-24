@@ -5,7 +5,7 @@ module GladiatorMatch
 
       session_key = GladiatorMatch.db.create_session
 
-      success(session_key: session_key)
+      success(session_key: session_key, github_login: inputs[:github_login])
     end
   end
 end
