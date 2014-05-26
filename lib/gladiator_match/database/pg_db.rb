@@ -22,7 +22,8 @@ module GladiatorMatch
       class User < ActiveRecord::Base
         has_many :groups, :through => :memberships
         has_many :memberships
-        has_many :interests, :through => :userinterests
+        has_many :interests, :through => :user_interests
+        has_many :user_interests
       end
 
       class Membership < ActiveRecord::Base
@@ -51,7 +52,8 @@ module GladiatorMatch
       end
 
       class Interest < ActiveRecord::Base
-        has_many :users, :through => :userinterests
+        has_many :users, :through => :user_interests
+        has_many :user_interests
       end
 
       def create_user(attrs)
@@ -63,8 +65,15 @@ module GladiatorMatch
         attrs.merge!(ar_user.attributes)
 
         entity_user = GladiatorMatch::User.new(attrs)
+
+        if attrs[:interests]
+          attrs[:interests].each do |interest|
+            ar_interest = Interest.find(interest.id)
+            UserInterest.create(user_id: ar_user.id, interest_id: ar_interest.id)
+          end
+        end
         
-        binding.pry
+        # binding.pry
         # for some reason this code causes rspec to stall
         # if attrs[:interests]
         #   attrs[:interests].each do |interest|
