@@ -154,7 +154,6 @@ module GladiatorMatch
         Invite.new(invite_attrs)
       end
 
-      # TO DO
       def update_invite(updated_invite)
         retrieved_invite = @invites[updated_invite.id]
         updated_invite_attrs = Hash[updated_invite.instance_values.map do |k,v|
@@ -164,7 +163,6 @@ module GladiatorMatch
           retrieved_invite[attr_type] = new_value
         end
 
-        # binding.pry
         Invite.new(updated_invite_attrs)
       end
 

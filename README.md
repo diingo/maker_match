@@ -21,6 +21,8 @@ A not so simple app to match coders together for learning, pair-programming, mak
 ## Current TO DO
 * login use case - update so that it finds or creates a user by github_id instead of github_login
 * use case - update user
+- In the create user db method, we are assuming the interest already exists when a user is created with the interest. Later on, may want to create a check such that if an interest does not yet exist, it can be added to the interest table
+
 - update database_spec to have expectation that returned values are entities
 
 - db update create use to have new attr_accessors

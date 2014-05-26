@@ -12,12 +12,17 @@ module GladiatorMatch
 
       def clear_everything
         User.destroy_all
+        Interest.destroy_all
+        Membership.destroy_all
+        Group.destroy_all
+        Session.destroy_all
+        Invite.destroy_all
       end
 
       class User < ActiveRecord::Base
         has_many :groups, :through => :memberships
         has_many :memberships
-        has_many :interests
+        has_many :interests, :through => :userinterests
       end
 
       class Membership < ActiveRecord::Base
@@ -40,25 +45,48 @@ module GladiatorMatch
         belongs_to :group
       end
 
+      class UserInterest < ActiveRecord::Base
+        belongs_to :user
+        belongs_to :interest
+      end
+
       class Interest < ActiveRecord::Base
+        has_many :users, :through => :userinterests
       end
 
       def create_user(attrs)
-        keepers = [:first_name, :last_name, :email, :github_login, :remote, :latitude, :longitude]
+        # ensure we only use these attributes to create the AR object
+        ar_attrs = attrs.slice(:first_name, :last_name, :email, :github_login, :remote, :latitude, :longitude, :github_id)
 
-        ar_attrs = attrs.keep_if { |k,v| keepers.include?(k)}
         ar_user = User.create(ar_attrs)
 
-        attrs.merge!(ar_attrs)
-        GladiatorMatch::User.new(ar_attrs)
+        attrs.merge!(ar_user.attributes)
+
+        entity_user = GladiatorMatch::User.new(attrs)
+        
+        binding.pry
+        # for some reason this code causes rspec to stall
+        # if attrs[:interests]
+        #   attrs[:interests].each do |interest|
+        #     entity_user.interests << Interest.find(interest.id)
+        #   end
+        # end
+
+        entity_user
       end
 
       def get_user(uid, groups: false)
         ar_user = User.find(uid)
         entity_user = GladiatorMatch::User.new(ar_user.attributes)
+
         if groups
           entity_user.groups = ar_user.groups
         end
+        # binding.pry
+        entity_user.interests = ar_user.interests.map do |interest|
+          GladiatorMatch::Interest.new(interest.attributes)
+        end
+
         entity_user
       end
 
@@ -79,6 +107,23 @@ module GladiatorMatch
         ar_user = User.find(ar_session.user_id)
         entity_user = get_user(ar_user.id, groups: true)
       end
+
+      def get_user_by_email(email)
+        ar_user = User.where(email: email)[0]
+        entity_user = GladiatorMatch::User.new(ar_user.attributes)
+        entity_user.groups = ar_user.groups
+        entity_user
+      end
+
+      def get_user_by_github_id(github_id)
+        ar_user = User.where(github_id: github_id)[0]
+        entity_user = GladiatorMatch::User.new(ar_user.attributes)
+        entity_user.groups = ar_user.groups
+        entity_user
+      end
+      # # # # #
+      # Group #
+      # # # # #
 
       def create_group(attrs)
         # AR Group created with default topic
@@ -107,6 +152,10 @@ module GladiatorMatch
         entity_group
       end
 
+      # # # # # #
+      # Invite  #
+      # # # # # #
+
       def create_invite(attrs)
         ar_invite = Invite.create(attrs)
         entity_invite = GladiatorMatch::Invite.new(ar_invite.attributes)
@@ -115,6 +164,22 @@ module GladiatorMatch
       def get_invite(iid)
         ar_invite = Invite.find(iid)
         entity_invite = GladiatorMatch::Invite.new(ar_invite.attributes)
+      end
+
+      def update_invite(updated_invite)
+        ar_invite = Invite.find(updated_invite.id)
+
+        # a hash with string keys
+        updated_invite_attrs = updated_invite.instance_values
+
+        updated_invite_attrs.each do |attr, value|
+          setter = (attr + "=").to_sym
+          ar_invite.send(setter, value)
+        end
+
+        ar_invite.save
+
+        Invite.new(updated_invite_attrs)
       end
 
       # # # # #  #
