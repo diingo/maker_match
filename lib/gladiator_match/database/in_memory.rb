@@ -59,6 +59,12 @@ module GladiatorMatch
         user = get_user(user_id, groups: true)
       end
 
+      def get_user_by_github_id(github_id)
+        user_attrs = @users.values.find { |attrs| attrs[:github_id] == github_id }
+        return nil if user_attrs.nil?
+        User.new(user_attrs)
+      end
+
       # # # # #
       # Group #
       # # # # #

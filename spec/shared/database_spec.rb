@@ -10,7 +10,8 @@ shared_examples 'a database' do
       :last_name => 'Toad',
       :email => 'toad@example.com',
       :github_login => 'toad',
-      :interests => []
+      :interests => [],
+      :github_id => 112
     )
   }
 
@@ -20,7 +21,8 @@ shared_examples 'a database' do
       :last_name => 'Mario',
       :email => 'mario@example.com',
       :github_login => 'mario_mario',
-      :interests => [interest_1, interest_2]
+      :interests => [interest_1, interest_2],
+      :github_id => 113
     )
   }
 
@@ -30,7 +32,8 @@ shared_examples 'a database' do
       :last_name => 'Mario',
       :email => 'luigi@example.com',
       :github_login => 'luigi_mario',
-      :interests => [interest_2]
+      :interests => [interest_2],
+      :github_id => 114
     )
   }
 
@@ -40,7 +43,8 @@ shared_examples 'a database' do
       :last_name => 'Peach',
       :email => 'peach@example.com',
       :github_login => 'peach',
-      :interests => [interest_1]
+      :interests => [interest_1],
+      :github_id => 115
     )
   }
 
@@ -55,13 +59,15 @@ shared_examples 'a database' do
     end
 
     it "gets a user" do
-      user = db.create_user(:first_name => 'Luigi', :last_name => 'Mario', :email => 'luigi@example.com', :github_login => 'luigi_mario')
+      user = db.create_user(:first_name => 'Luigi', :last_name => 'Mario', :email => 'luigi@example.com', :github_login => 'luigi_mario', :github_id => 113, :interests => [interest_1, interest_2])
       retrieved_user = db.get_user(user.id)
 
       expect(retrieved_user.github_login).to eq 'luigi_mario'
       expect(retrieved_user.last_name).to eq 'Mario'
       expect(retrieved_user.first_name).to eq 'Luigi'
       expect(retrieved_user.email).to eq 'luigi@example.com'
+      expect(retrieved_user.github_id).to eq(113)
+      expect(retrieved_user.interests).to include(interest_1, interest_2)
     end
 
     it "gets all users" do
@@ -75,6 +81,12 @@ shared_examples 'a database' do
       retrieved_user = db.get_user_by_login(peach.github_login)
 
       expect(retrieved_user.first_name).to eq('Peach')
+    end
+
+    it "gets a user by github id" do
+      retrieved_user = db.get_user_by_github_id(toad.github_id)
+
+      expect(retrieved_user.first_name).to eq('Toad')
     end
 
     it "gets a user by session key/id" do

@@ -19,8 +19,10 @@ A not so simple app to match coders together for learning, pair-programming, mak
 - Muut
 
 ## Current TO DO
+* login use case - update so that it finds or creates a user by github_id instead of github_login
+* use case - update user
 - update database_spec to have expectation that returned values are entities
-- use case - create user
+
 - db update create use to have new attr_accessors
 - see find_user_spec note - the stub for invalid location is probably being overriden by the before block stub - see note there
 
