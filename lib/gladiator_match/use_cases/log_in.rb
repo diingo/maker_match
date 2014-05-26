@@ -3,9 +3,15 @@ module GladiatorMatch
     def run(inputs)
       return failure(:invalid_login) if inputs[:github_login].blank?
 
-      session_key = GladiatorMatch.db.create_session
+      if GladiatorMatch.db.get_user_by_login(inputs[:github_login]).nil?
+        user = GladiatorMatch.db.create_user(github_login: inputs[:github_login])
+      else
+        user = GladiatorMatch.db.get_user_by_login(inputs[:github_login])
+      end
 
-      success(session_key: session_key, github_login: inputs[:github_login])
+      session_key = GladiatorMatch.db.create_session(user_id: user.id)
+
+      success(session_key: session_key, user: user)
     end
   end
 end
