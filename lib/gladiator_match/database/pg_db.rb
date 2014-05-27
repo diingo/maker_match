@@ -17,6 +17,7 @@ module GladiatorMatch
         Group.destroy_all
         Session.destroy_all
         Invite.destroy_all
+        UserInterest.destroy_all
       end
 
       class User < ActiveRecord::Base
@@ -49,6 +50,8 @@ module GladiatorMatch
       class UserInterest < ActiveRecord::Base
         belongs_to :user
         belongs_to :interest
+
+        validates_uniqueness_of :user_id, :scope => :interest_id
       end
 
       class Interest < ActiveRecord::Base
@@ -74,14 +77,6 @@ module GladiatorMatch
           end
         end
 
-        # binding.pry
-        # for some reason this code causes rspec to stall - interesting
-        # if attrs[:interests]
-        #   attrs[:interests].each do |interest|
-        #     entity_user.interests << Interest.find(interest.id)
-        #   end
-        # end
-
         entity_user
       end
 
@@ -92,7 +87,7 @@ module GladiatorMatch
         if groups
           entity_user.groups = ar_user.groups
         end
-        # binding.pry
+
         entity_user.interests = ar_user.interests.map do |interest|
           GladiatorMatch::Interest.new(interest.attributes)
         end
