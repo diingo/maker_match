@@ -71,41 +71,53 @@ shared_examples 'a database' do
       expect(retrieved_user.interests.map &:name).to include('haskell', 'java')
     end
 
-    xit "gets all users" do
+    it "gets all users" do
       %w{Peach Harley}.each {|name| db.create_user :first_name => name }
 
       expect(db.all_users.count).to eq 2
       expect(db.all_users.map &:first_name).to include('Peach', 'Harley')
     end
 
-    xit "gets a user by github_login" do
+    it "gets a user by github_login" do
       retrieved_user = db.get_user_by_login(peach.github_login)
 
       expect(retrieved_user.first_name).to eq('Peach')
     end
 
-    xit "gets a user by github id" do
+    it "gets a user by github id" do
       retrieved_user = db.get_user_by_github_id(toad.github_id)
 
       expect(retrieved_user.first_name).to eq('Toad')
     end
 
-    xit "gets a user by session key/id" do
+    it "gets a user by session key/id" do
       sid = db.create_session(user_id: peach.id)
       retrieved_user = db.get_user_by_session(sid)
       expect(retrieved_user.first_name).to eq('Peach')
     end
 
-    xit "gets a user by email" do
+    it "gets a user by email" do
       retrieved_user = db.get_user_by_email(luigi.email)
       expect(retrieved_user.first_name).to eq('Luigi')
     end
 
-    xit "gets all users by interest"
+    it "updates a user" do
+      retrieved_user = db.get_user(luigi.id)
+      expect(retrieved_user.github_login).to eq('luigi_mario')
+
+      # update the user's github login
+      retrieved_user.github_login = 'super_luigi'
+      db.update_user(retrieved_user)
+
+      updated_user = db.get_user(retrieved_user.id)
+      expect(updated_user.github_login).to eq('super_luigi')
+    end
+
+    it "gets all users by interest"
   end
 
 
-  describe 'Groups', pending: true do
+  describe 'Groups' do
 
     it "creates a group with default topic" do
       group = db.create_group(users: [mario, luigi])

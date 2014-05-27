@@ -44,6 +44,19 @@ module GladiatorMatch
         user
       end
 
+      def update_user(updated_user)
+        attrs = @users[updated_user.id]
+        updated_attrs = Hash[updated_user.instance_values.map do |k,v|
+          [k.to_sym,v]
+        end]
+
+        updated_attrs.each do |attr_type, value|
+          attrs[attr_type] = value
+        end
+
+        user = User.new(attrs)
+      end
+
       def get_user_by_email(email)
         user_attrs = @users.values.find { |attrs| attrs[:email] == email }
         return nil if user_attrs.nil?
@@ -94,7 +107,7 @@ module GladiatorMatch
       end
 
       def update_group(group)
-        retrieved_attrs = @groups[group.id]
+        attrs = @groups[group.id]
         # get the instance attributes as a hash and convert the keys from strings to symbols
         # TO DO
         updated_attrs = Hash[group.instance_values.map do |k,v|
@@ -102,7 +115,7 @@ module GladiatorMatch
         end]
         # binding.pry
         updated_attrs.each do |attr_type, new_value|
-          retrieved_attrs[attr_type] = new_value
+          attrs[attr_type] = new_value
         end
 
         updated_attrs[:users].each do |user|
@@ -111,7 +124,7 @@ module GladiatorMatch
           @memberships << { group_id: group.id, user_id: user.id} unless @memberships.include?(hash)
         end
 
-        Group.new(updated_attrs)
+        Group.new(attrs)
       end
 
       # # # # # #

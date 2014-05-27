@@ -42,7 +42,7 @@ module GladiatorMatch
       end
 
       # should there be some relationship with users
-      # even though interest only has two columns for user ids
+      # even though invite only has two columns for user ids?
       class Invite < ActiveRecord::Base
         belongs_to :group
       end
@@ -64,15 +64,12 @@ module GladiatorMatch
         ar_attrs = attrs.slice(:first_name, :last_name, :email, :github_login, :remote, :latitude, :longitude, :github_id)
 
         ar_user = User.create(ar_attrs)
-
         attrs.merge!(ar_user.attributes)
-
         entity_user = GladiatorMatch::User.new(attrs)
 
         if attrs[:interests]
           attrs[:interests].each do |interest|
             ar_interest = Interest.find(interest.id)
-
             UserInterest.create(user_id: ar_user.id, interest_id: ar_interest.id)
           end
         end
@@ -126,6 +123,21 @@ module GladiatorMatch
         entity_user.groups = ar_user.groups
         entity_user
       end
+
+      def update_user(updated_user)
+        ar_user = User.find(updated_user.id)
+
+        updated_attrs = updated_user.instance_values
+        updated_attrs.delete("interests")
+
+        updated_attrs.each do |attr, value|
+          setter = (attr + "=").to_sym
+          ar_user.send(setter, value)
+        end
+
+        ar_user.save
+      end
+
       # # # # #
       # Group #
       # # # # #
