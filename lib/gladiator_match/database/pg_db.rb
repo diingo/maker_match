@@ -69,12 +69,13 @@ module GladiatorMatch
         if attrs[:interests]
           attrs[:interests].each do |interest|
             ar_interest = Interest.find(interest.id)
+
             UserInterest.create(user_id: ar_user.id, interest_id: ar_interest.id)
           end
         end
-        
+
         # binding.pry
-        # for some reason this code causes rspec to stall
+        # for some reason this code causes rspec to stall - interesting
         # if attrs[:interests]
         #   attrs[:interests].each do |interest|
         #     entity_user.interests << Interest.find(interest.id)
