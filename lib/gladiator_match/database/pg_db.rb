@@ -195,8 +195,6 @@ module GladiatorMatch
         end
 
         ar_invite.save
-
-        Invite.new(updated_invite_attrs)
       end
 
       # # # # #  #
