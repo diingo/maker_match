@@ -48,10 +48,13 @@ shared_examples 'a database' do
     )
   }
 
-  before { db.clear_everything }
+  before do
+    Geocoder.stub(:coordinates).and_return([29.6185208, -95.6090009])
+    db.clear_everything
+  end
 
   describe 'Users' do
-    xit "creates a user" do
+    it "creates a user" do
       user = db.create_user(:first_name => 'Mario', :last_name => 'Mario', :email => 'mario@example.com', :github_login => 'mario_mario')
       expect(user).to be_a GladiatorMatch::User
       expect(user.first_name).to eq 'Mario'
@@ -59,7 +62,7 @@ shared_examples 'a database' do
     end
 
     it "gets a user" do
-      user = db.create_user(:first_name => 'Luigi', :last_name => 'Mario', :email => 'luigi@example.com', :github_login => 'luigi_mario', :github_id => 113, :interests => [interest_1, interest_2])
+      user = db.create_user(:first_name => 'Luigi', :last_name => 'Mario', :email => 'luigi@example.com', :github_login => 'luigi_mario', :github_id => 113, :interests => [interest_1, interest_2], :location => 77478)
 
       retrieved_user = db.get_user(user.id)
 
@@ -69,6 +72,8 @@ shared_examples 'a database' do
       expect(retrieved_user.email).to eq 'luigi@example.com'
       expect(retrieved_user.github_id).to eq(113)
       expect(retrieved_user.interests.map &:name).to include('haskell', 'java')
+      expect(retrieved_user.latitude).to eq(29.6185208)
+      expect(retrieved_user.longitude).to eq(-95.6090009)
     end
 
     it "gets all users" do

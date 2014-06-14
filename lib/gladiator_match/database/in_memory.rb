@@ -32,12 +32,21 @@ module GladiatorMatch
       def create_user(attrs)
         attrs[:id] = (@user_id_counter += 1)
 
+        if attrs[:location]
+          lat_long = Geocoder.coordinates(attrs[:location])
+          attrs[:latitude] = lat_long[0]
+          attrs[:longitude] = lat_long[1]
+        end
+
         User.new(attrs).tap {|user| @users[user.id] = attrs }
       end
 
       def get_user(uid, groups: false)
         attrs = @users[uid]
+        return if attrs.nil?
+
         user = User.new(attrs)
+
         if groups
           user.groups = get_groups_by_user(user.id)
         end
@@ -113,7 +122,7 @@ module GladiatorMatch
         updated_attrs = Hash[group.instance_values.map do |k,v|
           [k.to_sym,v]
         end]
-        # binding.pry
+
         updated_attrs.each do |attr_type, new_value|
           attrs[attr_type] = new_value
         end

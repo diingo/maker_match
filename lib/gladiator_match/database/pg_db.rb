@@ -61,6 +61,13 @@ module GladiatorMatch
 
       def create_user(attrs)
         # ensure we only use these attributes to create the AR object
+
+        if attrs[:location]
+          lat_long = Geocoder.coordinates(attrs[:location])
+          attrs[:latitude] = lat_long[0]
+          attrs[:longitude] = lat_long[1]
+        end
+
         ar_attrs = attrs.slice(:first_name, :last_name, :email, :github_login, :remote, :latitude, :longitude, :github_id)
 
         ar_user = User.create(ar_attrs)
