@@ -68,7 +68,7 @@ module GladiatorMatch
           attrs[:longitude] = lat_long[1]
         end
 
-        ar_attrs = attrs.slice(:first_name, :last_name, :email, :github_login, :remote, :latitude, :longitude, :github_id)
+        ar_attrs = attrs.slice(:first_name, :last_name, :email, :github_login, :remote, :latitude, :longitude, :github_id, :location)
 
         ar_user = User.create(ar_attrs)
         attrs.merge!(ar_user.attributes)

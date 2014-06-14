@@ -74,6 +74,7 @@ shared_examples 'a database' do
       expect(retrieved_user.interests.map &:name).to include('haskell', 'java')
       expect(retrieved_user.latitude).to eq(29.6185208)
       expect(retrieved_user.longitude).to eq(-95.6090009)
+      expect(retrieved_user.location).to eq('77478')
     end
 
     it "gets all users" do
