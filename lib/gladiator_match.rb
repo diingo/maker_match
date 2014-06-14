@@ -25,6 +25,6 @@ Dir["#{File.dirname(__FILE__)}/gladiator_match/entities/*.rb"].each { |f| requir
 
 module GladiatorMatch
   def self.db
-    @__db_instance ||= Database::InMemory.new
+    @__db_instance ||= Database::PostGres.new
   end
 end
