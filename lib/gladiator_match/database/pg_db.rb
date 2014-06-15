@@ -113,6 +113,8 @@ module GladiatorMatch
 
       def get_user_by_session(sid)
         ar_session = Session.where(session_key: sid).first
+        return nil if ar_session.nil?
+
         ar_user = User.find(ar_session.user_id)
         entity_user = get_user(ar_user.id, groups: true)
       end

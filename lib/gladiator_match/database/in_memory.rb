@@ -77,6 +77,8 @@ module GladiatorMatch
       end
 
       def get_user_by_session(sid)
+        return if @sessions[sid].nil?
+
         user_id = @sessions[sid][:user_id]
         user = get_user(user_id, groups: true)
       end
