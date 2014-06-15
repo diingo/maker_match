@@ -142,6 +142,20 @@ module GladiatorMatch
           ar_user.send(setter, value)
         end
 
+        # TODO: Test this in db tests
+        if updated_user.interests.map(&:name) != ar_user.interests.map(&:name)
+          UserInterest.delete_all("user_id = #{ar_user.id}")
+
+          updated_user.interests.each do |interest|
+            if Interest.where(name: interest.name).first
+              UserInterest.create(user_id: ar_user.id, interest_id: interest.id)
+            else
+              ar_user.interests.create(interest.instance_values)
+            end
+          end
+
+        end
+
         ar_user.save
       end
 

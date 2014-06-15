@@ -27,6 +27,7 @@ describe GladiatorMatch::FindUser do
   let(:result) { described_class.run(@params) }
 
   before do
+    GladiatorMatch.db.clear_everything
     @params = { location: '78703', interest: interest_1 }
     Geocoder.stub(:coordinates).with('78703').and_return([30.2915328, -97.76883579999999])
   end

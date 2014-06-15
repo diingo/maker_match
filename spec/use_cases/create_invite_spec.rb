@@ -26,6 +26,7 @@ describe GladiatorMatch::CreateInvite do
   let(:result) { described_class.run(@params) }
 
   before do
+    GladiatorMatch.db.clear_everything
     @db = GladiatorMatch.db
     @params = { inviter_session_key: session_key, invitee_github_login: peach.github_login, group_id: group.id }
   end

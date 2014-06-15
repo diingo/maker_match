@@ -33,6 +33,7 @@ describe GladiatorMatch::RespondToInvite do
   let(:result) { described_class.run(@params) }
 
   before do
+    GladiatorMatch.db.clear_everything
     @params = { invite_id: invite.id, response: 'accept' }
   end
 

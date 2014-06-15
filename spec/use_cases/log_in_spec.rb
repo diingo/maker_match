@@ -15,6 +15,7 @@ describe GladiatorMatch::LogIn do
   let(:result) { described_class.run(@params) }
 
   before do
+    GladiatorMatch.db.clear_everything
     @params = { }
   end
 

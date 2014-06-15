@@ -5,6 +5,7 @@ describe GladiatorMatch::CreateInterest do
   let(:result) { described_class.run(@params) }
 
   before do
+    GladiatorMatch.db.clear_everything
     @params = { expertise: 'beginner', name: 'haskell'}
   end
 
