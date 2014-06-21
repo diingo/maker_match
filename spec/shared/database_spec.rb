@@ -164,7 +164,7 @@ shared_examples 'a database' do
     end
   end
 
-  describe 'Sessions', pending: true do
+  describe 'Sessions' do
 
     it "creates and gets a session" do
       session_id = db.create_session(user_id: mario.id)
@@ -187,9 +187,17 @@ shared_examples 'a database' do
       retrieved_session = db.get_session(session_id)
       expect(retrieved_session[:user_id]).to eq(peach.id)
     end
+
+    it "can destroy a session" do
+      session_id = db.create_session
+      expect(db.get_session(session_id)).to_not be_nil
+
+      db.destroy_session(session_id)
+      expect(db.get_session(session_id)).to be_nil
+    end
   end
 
-  describe 'Invites', pending: true do
+  describe 'Invites' do
     it "creates and gets invites" do
       invite = db.create_invite(inviter_id: mario.id, invitee_id: peach.id)
       retrieved_invite = db.get_invite(invite.id)

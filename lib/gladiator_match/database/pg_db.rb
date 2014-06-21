@@ -238,7 +238,7 @@ module GladiatorMatch
       # Session ##
       # # # # #  #
 
-      def create_session(attrs)
+      def create_session(attrs = {})
         # generate unique crazy id for session
         sid = SecureRandom.uuid
         ar_session = Session.create(session_key: sid, user_id: attrs[:user_id])
@@ -247,8 +247,13 @@ module GladiatorMatch
 
       def get_session(skey)
         ar_session = Session.where(session_key: skey).first
+        return nil if ar_session.nil?
         # may need to change :id to :skey for both here and inmemory db
         { id: ar_session.session_key, user_id: ar_session.user_id }
+      end
+
+      def destroy_session(skey)
+        Session.find_by_session_key(skey).destroy
       end
 
       # # # # #  #
