@@ -30,6 +30,8 @@ module GladiatorMatch
       class Membership < ActiveRecord::Base
         belongs_to :user
         belongs_to :group
+
+        validates_uniqueness_of :user_id, :scope => :group_id
       end
 
       class Group < ActiveRecord::Base
@@ -192,6 +194,28 @@ module GladiatorMatch
         entity_group
       end
 
+      # TODO: QUESTION: perhaps I should do a separate add/remove user group update method
+      def update_group(group)
+        ar_group = Group.find(group.id)
+        updated_attrs = group.instance_values
+
+        updated_attrs.each do |attr, value|
+          setter = (attr + "=").to_sym
+          ar_group.send(setter, value) unless setter == :users=
+        end
+
+        # add user to group if user not yet in group membership
+        group.users.each do |user|
+          Membership.create(user_id: user.id, group_id: group.id)
+        end
+
+        # delete user from group if updated group no longer has the user
+        ar_group.users.each do |ar_user|
+          Membership.find_by_user_id(ar_user.id).delete if !group.users.find { |user| user.id == ar_user.id }
+        end
+
+        ar_group.save
+      end
       # # # # # #
       # Invite  #
       # # # # # #
